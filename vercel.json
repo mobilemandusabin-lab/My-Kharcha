@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "installCommand": "npm install --prefix backend && npm install --prefix frontend",
-  "buildCommand": "npm run build --prefix frontend",
+  "installCommand": "if [ -f backend/package.json ]; then npm install --prefix backend && npm install --prefix frontend; else npm install; fi",
+  "buildCommand": "if [ -f frontend/package.json ]; then npm run build --prefix frontend; else echo 'skip frontend build'; fi",
   "outputDirectory": "frontend/dist",
   "functions": {
     "api/index.js": {
