@@ -4,7 +4,7 @@ const { requireMembership, getActiveMembership } = require('../services/familyAc
 const asyncHandler = require('../utils/asyncHandler');
 const { getCurrentBS } = require('../utils/nepalDate');
 const { parseBSMonthQuery, getTodayRange } = require('../services/dateRange');
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID } = require('crypto');
 
 function toBool(v) { return v === true || v === 'true' || v === '1'; }
 
@@ -74,7 +74,7 @@ exports.createTransaction = asyncHandler(async (req, res) => {
   if (!body.title || !String(body.title).trim()) return res.status(400).json({ message: 'Title is required' });
   if (!body.category || !String(body.category).trim()) return res.status(400).json({ message: 'Category is required' });
   if (!['expense', 'income'].includes(type)) return res.status(400).json({ message: 'Invalid type' });
-  const clientTransactionId = body.clientTransactionId || uuidv4();
+  const clientTransactionId = body.clientTransactionId || randomUUID();
   const transactionAt = body.transactionAt ? new Date(body.transactionAt) : new Date();
   if (isNaN(transactionAt.getTime())) return res.status(400).json({ message: 'Invalid date/time' });
 

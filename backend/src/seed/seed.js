@@ -8,7 +8,7 @@ const Transaction = require('../models/Transaction');
 const Budget = require('../models/Budget');
 const Settings = require('../models/Settings');
 const { getCurrentBS, getDaysInBSMonth, bsToAdDate, fromNepalWallClockToUtc } = require('../utils/nepalDate');
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID } = require('crypto');
 
 const SEED_EMAILS = [
   'sabin.seed@mykharcha.local',
@@ -99,7 +99,7 @@ async function seedData({ resetOnly = false } = {}) {
     await Transaction.create({
       userId: sabin._id,
       familyId: null,
-      clientTransactionId: uuidv4(),
+      clientTransactionId: randomUUID(),
       scope: 'personal',
       type: r.type,
       title: r.title,
@@ -117,8 +117,8 @@ async function seedData({ resetOnly = false } = {}) {
     count++;
   }
 
-  await Transaction.create({ userId: shivani._id, familyId:null, clientTransactionId: uuidv4(), scope:'personal', type:'income', title:'Freelance payment', amount:15000, category:'Freelance', paymentMethod:'Bank Transfer', paidBy: shivani._id, notes:'Seed sample', transactionAt: bsDateToUtc(cur.year,cur.month,2,11,0), isBookmarked:false, source:'seed', paymentStatus:'paid', isSeed:true });
-  await Transaction.create({ userId: shivani._id, familyId:null, clientTransactionId: uuidv4(), scope:'personal', type:'expense', title:'Lunch', amount:350, category:'Lunch', paymentMethod:'Cash', paidBy: shivani._id, notes:'Seed sample', transactionAt: bsDateToUtc(cur.year,cur.month,3,13,0), isBookmarked:false, source:'seed', paymentStatus:'paid', isSeed:true });
+  await Transaction.create({ userId: shivani._id, familyId:null, clientTransactionId: randomUUID(), scope:'personal', type:'income', title:'Freelance payment', amount:15000, category:'Freelance', paymentMethod:'Bank Transfer', paidBy: shivani._id, notes:'Seed sample', transactionAt: bsDateToUtc(cur.year,cur.month,2,11,0), isBookmarked:false, source:'seed', paymentStatus:'paid', isSeed:true });
+  await Transaction.create({ userId: shivani._id, familyId:null, clientTransactionId: randomUUID(), scope:'personal', type:'expense', title:'Lunch', amount:350, category:'Lunch', paymentMethod:'Cash', paidBy: shivani._id, notes:'Seed sample', transactionAt: bsDateToUtc(cur.year,cur.month,3,13,0), isBookmarked:false, source:'seed', paymentStatus:'paid', isSeed:true });
 
   await Budget.create({ userId: sabin._id, familyId:null, scope:'personal', year: cur.year, month: cur.month, totalBudget:30000, categoryBudgets:[{category:'Food & Drinks',amount:8000},{category:'Lunch',amount:4000},{category:'Dinner',amount:4000},{category:'Transportation',amount:5000},{category:'Shopping',amount:6000}], isSeed:true });
 
@@ -130,7 +130,7 @@ async function seedData({ resetOnly = false } = {}) {
     { title:'Household items', amount:1500, category:'Personal', paidBy:member3._id, method:'Cash', d:5 },
   ];
   for (const r of famRows) {
-    await Transaction.create({ userId: r.paidBy, familyId: family._id, clientTransactionId: uuidv4(), scope:'family', type:'expense', title:r.title, amount:r.amount, category:r.category, paymentMethod:r.method, paidBy:r.paidBy, notes:'Seed family sample', transactionAt: bsDateToUtc(cur.year,cur.month,Math.min(r.d,curDays),18,0), isBookmarked:false, source:'seed', paymentStatus:'paid', isSeed:true });
+    await Transaction.create({ userId: r.paidBy, familyId: family._id, clientTransactionId: randomUUID(), scope:'family', type:'expense', title:r.title, amount:r.amount, category:r.category, paymentMethod:r.method, paidBy:r.paidBy, notes:'Seed family sample', transactionAt: bsDateToUtc(cur.year,cur.month,Math.min(r.d,curDays),18,0), isBookmarked:false, source:'seed', paymentStatus:'paid', isSeed:true });
   }
   await Budget.create({ userId:null, familyId: family._id, scope:'family', year: cur.year, month: cur.month, totalBudget:30000, categoryBudgets:[{category:'Groceries',amount:10000},{category:'Electricity',amount:3000},{category:'Internet & Phone',amount:2000}], isSeed:true });
 
