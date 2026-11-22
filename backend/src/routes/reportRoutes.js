@@ -1,0 +1,12 @@
+const router = require('express').Router();
+const auth = require('../middleware/auth');
+const ctrl = require('../controllers/reportController');
+router.use(auth);
+router.get('/daily', ctrl.dailyReport);
+router.get('/weekly', ctrl.weeklyReport);
+router.get('/monthly', ctrl.monthlyReport);
+router.get('/categories', ctrl.categoryReport);
+router.get('/summary', ctrl.summary);
+router.get('/month-end-summary', ctrl.monthEndSummary);
+router.get('/comparison', ctrl.monthlyComparison);
+module.exports = router;
